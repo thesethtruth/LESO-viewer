@@ -1,0 +1,16 @@
+pandas
+plotly
+numpy
+dash_core_components
+dash
+dash_html_components
+dash-renderer
+Flask
+gunicorn>=20.0.0
+google-api-core
+google-auth
+google-cloud-core
+google-cloud-storage
+google-resumable-media
+googleapis-common-protos
+google-cloud-datastore
