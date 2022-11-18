@@ -6,7 +6,7 @@ dash
 dash_html_components
 dash-renderer
 Flask
-gunicorn>=20.0.0
+gunicorn
 google-api-core
 google-auth
 google-cloud-core

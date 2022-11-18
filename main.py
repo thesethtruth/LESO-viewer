@@ -11,18 +11,17 @@ import plotly.express as px
 import pandas as pd
 
 external_stylesheets = ["https://codepen.io/chriddyp/pen/bWLwgP.css"]
-app = dash.Dash(
-    __name__, external_stylesheets=external_stylesheets, title="LESO results browser"
-)
-server = app.server
-
 options_dict = {
     "Low DC ratio": "low_dc",
     "High DC ratio": "high_dc",
     "Both DC ratio's": "both_dc",
 }
-
 COLLECTION = "cablepooling_paper"
+
+app = dash.Dash(
+    __name__, external_stylesheets=external_stylesheets, title="LESO results browser"
+)
+server = app.server
 
 app.layout = html.Div(
     [
@@ -148,12 +147,21 @@ def populate_dropdowns(data):
     options = [{"label": key, "value": key} for key in cols]
     value = cols[0]
 
-    x_default = "pv_cost" 
+    x_default = "pv_cost"
     y_default = "battery_cost"
     hue_default = "curtailment"
-    size_default="PV low DC ratio installed capacity"
+    size_default = "PV low DC ratio installed capacity"
 
-    return options, x_default, options, y_default, options, hue_default, options, size_default
+    return (
+        options,
+        x_default,
+        options,
+        y_default,
+        options,
+        hue_default,
+        options,
+        size_default,
+    )
 
 
 @app.callback(
@@ -253,15 +261,24 @@ def filter_figure(x_col, y_col, x_range, y_range, data, hue, size):
     sliced_df = df[total_slice]
     layout = go.Layout({"showlegend": False})
     fig = go.Figure(
-        data=px.scatter(sliced_df, x=x_col, y=y_col, color=hue, size=size, custom_data=['filename_export']),
+        data=px.scatter(
+            sliced_df,
+            x=x_col,
+            y=y_col,
+            color=hue,
+            size=size,
+            custom_data=["filename_export"],
+        ),
         layout=layout,
     )
     fig.update_traces(
-    hovertemplate="<br>".join([
-        f"{x_col}: "+"%{x}",
-        f"{y_col}: "+"%{y}",
-        "Simulation run ID: %{customdata[0]}",
-    ])
+        hovertemplate="<br>".join(
+            [
+                f"{x_col}: " + "%{x}",
+                f"{y_col}: " + "%{y}",
+                "Simulation run ID: %{customdata[0]}",
+            ]
+        )
     )
     fig.update_layout(
         template="simple_white",
@@ -302,7 +319,6 @@ def populate_filtered_experiments(data):
     Input("timeseries-store", "data"),
 )
 def profile_plot(startingweek, data):
-    print(startingweek)
     fig = af.make_profile_plot(startingweek, data)
 
     return fig
