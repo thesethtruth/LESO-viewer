@@ -12,11 +12,11 @@ import pandas as pd
 
 external_stylesheets = ["https://codepen.io/chriddyp/pen/bWLwgP.css"]
 options_dict = {
-    "Low DC ratio": "low_dc",
-    "High DC ratio": "high_dc",
-    "Both DC ratio's": "both_dc",
+    "Low DC ratio": "low_ratio",
+    "High DC ratio": "high_ratio",
+    "Both DC ratio's": "both_ratios",
 }
-COLLECTION = "cablepooling_paper"
+COLLECTION = "cablepooling_paper_v2"
 
 app = dash.Dash(
     __name__, external_stylesheets=external_stylesheets, title="LESO results browser"
@@ -174,7 +174,7 @@ def filter_cached_datastore_df(experiment, data):
     df = pd.DataFrame.from_dict(json.loads(data))
 
     if experiment != "null":
-        df = df.query(f"experiment == '{experiment}'")
+        df = df.query(f"dc_ratio == '{experiment}'")
     return df.to_json()
 
 
