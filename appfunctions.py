@@ -40,7 +40,8 @@ def make_profile_plot(startingweek, data):
             if not pos_serie.sum() < 1e-5:
                 styling = cdict["styling"]
                 styling = styling[0] if isinstance(styling, list) else styling
-                label = styling["label"] + f" ({ckey})"
+                label = styling["label"]
+                label = label + f" ({ckey.split('_')[0].split('thium')[-1]})" if "Bat" in label else label 
                 group = styling["group"]
                 color = styling["color"]
                 make_scatter_power(fig, start, end, pos_serie, group, label, color)
@@ -49,7 +50,8 @@ def make_profile_plot(startingweek, data):
             if not neg_serie.sum() > -1e-5:
                 styling = cdict["styling"]
                 styling = styling[1] if isinstance(styling, list) else styling
-                label = styling["label"] + f" ({ckey})"
+                label = styling["label"]
+                label = label + f" ({ckey.split('_')[0].split('thium')[-1]})" if "Bat" in label else label 
                 group = styling["group"]
                 color = styling["color"]
                 make_scatter_power(fig, start, end, neg_serie, group, label, color)
@@ -61,8 +63,8 @@ def make_profile_plot(startingweek, data):
         yaxis_title="power (MW)",
         template="simple_white",
     )
-    fig.add_hline(y=10, line_width=1, line_dash="dot", line_color="black")
-    fig.add_hline(y=-10, line_width=1, line_dash="dot", line_color="black")
+    fig.add_hline(y=10, line_width=1, line_dash="dot", line_color="black", name="Grid capacity")
+    fig.add_hline(y=-10, line_width=1, line_dash="dot", line_color="black", )
 
     return fig
 
