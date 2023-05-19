@@ -15,7 +15,18 @@ def make_profile_plot(startingweek, data):
     end = startingweek * 168
     fig = go.Figure()
 
-    for ckey in data["components"].keys():
+    def order_components(key: str) -> int:
+        order = ["wind", "pv", "grid", "lithium", "balance"]
+        for i, order_key in enumerate(order):
+            if order_key in key.lower():
+                return i
+            
+        return 999
+    
+    ckeys = list(data["components"].keys())
+    ckeys.sort(key=order_components)
+
+    for ckey in ckeys:
 
         cdict = data["components"][ckey]
         _df = pd.DataFrame(cdict["state"], index=data["system"]["dates"])
@@ -50,6 +61,8 @@ def make_profile_plot(startingweek, data):
         yaxis_title="power (MW)",
         template="simple_white",
     )
+    fig.add_hline(y=10, line_width=1, line_dash="dot", line_color="black")
+    fig.add_hline(y=-10, line_width=1, line_dash="dot", line_color="black")
 
     return fig
 
